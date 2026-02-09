@@ -1,0 +1,110 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="AppName" xml:space="preserve">
+        <value>XPlayer</value>
+    </data>
+    <data name="Home" xml:space="preserve">
+        <value>主页</value>
+    </data>
+    <data name="CloseToTrayPromptMessage" xml:space="preserve">
+        <value>您希望最小化到托盘还是直接退出程序？</value>
+    </data>
+    <data name="RememberMyChoice" xml:space="preserve">
+        <value>记住我的选择</value>
+    </data>
+    <data name="MinimizeToTray" xml:space="preserve">
+        <value>最小化到托盘</value>
+    </data>
+    <data name="ExitApp" xml:space="preserve">
+        <value>退出程序</value>
+    </data>
+    <data name="ToggleMode" xml:space="preserve">
+        <value>切换</value>
+    </data>
+    <data name="TitleBarContent" xml:space="preserve">
+        <value>窗口标题已 </value>
+    </data>
+    <data name="TitleBar" xml:space="preserve">
+        <value>标题栏</value>
+    </data>
+    <data name="TitleBarTip" xml:space="preserve">
+        <value>切换标题栏</value>
+    </data>
+    <data name="TitleBarTitle" xml:space="preserve">
+        <value>标题栏 </value>
+    </data>
+    <data name="FullScreen" xml:space="preserve">
+        <value>全屏</value>
+    </data>
+    <data name="FullScreenTip" xml:space="preserve">
+        <value>全屏APP</value>
+    </data>
+    <data name="ThemeChangedContent" xml:space="preserve">
+        <value>主题已切换至</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>主题</value>
+    </data>
+    <data name="ThemeName" xml:space="preserve">
+        <value>主题名称</value>
+    </data>
+    <data name="ThemeChangedTitle" xml:space="preserve">
+        <value>主题切换</value>
+    </data>
+    <data name="CreateCustom" xml:space="preserve">
+        <value>自定义</value>
+    </data>
+    <data name="OpenOnGithub" xml:space="preserve">
+        <value>在 Github 上打开</value>
+    </data>
+    <data name="OpenOnOfficialSite" xml:space="preserve">
+        <value>在 官网 上打开</value>
+    </data>
+    <data name="ColorChangedContent" xml:space="preserve">
+        <value>主题色已切换至</value>
+    </data>
+    <data name="ColorChangedTitle" xml:space="preserve">
+        <value>切换主题色</value>
+    </data>
+    <data name="TrayShow" xml:space="preserve">
+        <value>显示</value>
+    </data>
+    <data name="TrayExit" xml:space="preserve">
+        <value>退出</value>
+    </data>
+    <data name="NewVersionAvailable" xml:space="preserve">
+        <value>发现新版本</value>
+    </data>
+    <data name="NewVersionContent" xml:space="preserve">
+        <value>发现新版本 {0}！</value>
+    </data>
+    <data name="Later" xml:space="preserve">
+        <value>稍后</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+        <value>更新</value>
+    </data>
+    <data name="Updating" xml:space="preserve">
+        <value>更新中</value>
+    </data>
+    <data name="UpdateFailed" xml:space="preserve">
+        <value>更新失败</value>
+    </data>
+    <data name="CheckNetwork" xml:space="preserve">
+        <value>连接失败，请检查网络设置或代理。</value>
+    </data>
+    <data name="CloseToTrayPromptTitle" xml:space="preserve">
+        <value>关闭操作</value>
+    </data>
+</root>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppName" xml:space="preserve">
+    <value>XPlayer</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="CloseToTrayPromptMessage" xml:space="preserve">
+    <value>Do you want to minimize to tray or exit the application?</value>
+  </data>
+  <data name="RememberMyChoice" xml:space="preserve">
+    <value>Remember my choice</value>
+  </data>
+  <data name="MinimizeToTray" xml:space="preserve">
+    <value>Minimize to Tray</value>
+  </data>
+  <data name="ExitApp" xml:space="preserve">
+    <value>Exit Application</value>
+  </data>
+  <data name="ToggleMode" xml:space="preserve">
+    <value>Toggle</value>
+  </data>
+  <data name="TitleBar" xml:space="preserve">
+    <value>Title Bar</value>
+  </data>
+  <data name="TitleBarTip" xml:space="preserve">
+    <value>Toggles the title bar.</value>
+  </data>
+  <data name="TitleBarContent" xml:space="preserve">
+    <value>Window title bar has been </value>
+  </data>
+  <data name="TitleBarTitle" xml:space="preserve">
+    <value>Title Bar </value>
+  </data>
+  <data name="FullScreen" xml:space="preserve">
+    <value>Full Screen</value>
+  </data>
+  <data name="FullScreenTip" xml:space="preserve">
+    <value>Makes the app fullscreen.</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ThemeChangedContent" xml:space="preserve">
+    <value>Theme has changed to </value>
+  </data>
+  <data name="ThemeChangedTitle" xml:space="preserve">
+    <value>Theme Changed</value>
+  </data>
+  <data name="ThemeName" xml:space="preserve">
+    <value>Theme Name</value>
+  </data>
+  <data name="CreateCustom" xml:space="preserve">
+    <value>Create Custom</value>
+  </data>
+  <data name="OpenOnGithub" xml:space="preserve">
+    <value>Open on Github.</value>
+  </data>
+  <data name="OpenOnOfficialSite" xml:space="preserve">
+    <value>Open on official site.</value>
+  </data>
+  <data name="ColorChangedTitle" xml:space="preserve">
+    <value>Color Changed</value>
+  </data>
+  <data name="ColorChangedContent" xml:space="preserve">
+    <value>Color has changed to</value>
+  </data>
+  <data name="TrayShow" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="TrayExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>New Version Available</value>
+  </data>
+  <data name="NewVersionContent" xml:space="preserve">
+    <value>A new version {0} is available!</value>
+  </data>
+  <data name="Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Updating</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Update Failed</value>
+  </data>
+  <data name="CheckNetwork" xml:space="preserve">
+    <value>Please check your network connection.</value>
+  </data>
+  <data name="CloseToTrayPromptTitle" xml:space="preserve">
+    <value>Closing Action</value>
+  </data>
+</root>

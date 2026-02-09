@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dialogs="clr-namespace:XPlayer.Desktop.ViewModels.Dialogs"
+             xmlns:lang="clr-namespace:XPlayer.Lang;assembly=XPlayer.Lang"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+             x:Class="XPlayer.Desktop.Views.Dialogs.CloseBehaviorDialogView"
+             x:DataType="dialogs:CloseBehaviorDialogViewModel">
+    <StackPanel Spacing="20" Margin="10 40 0 0">
+        <TextBlock Text="{lang:Localize CloseToTrayPromptMessage}" TextWrapping="Wrap" />
+        
+        <CheckBox Content="{lang:Localize RememberMyChoice}" 
+                  IsChecked="{Binding IsRemember}" />
+        
+        <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+            <Button Command="{Binding MinimizeCommand}" 
+                    Content="{lang:Localize MinimizeToTray}" 
+                    Classes="Flat"/>
+            <Button Command="{Binding ExitAppCommand}" 
+                    Content="{lang:Localize ExitApp}" 
+                    Classes="Default"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

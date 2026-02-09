@@ -1,0 +1,142 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:XPlayer.Desktop.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lang="clr-namespace:XPlayer.Lang;assembly=XPlayer.Lang"
+        xmlns:suki="https://github.com/kikipoulet/SukiUI"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:converters="clr-namespace:XPlayer.Desktop.Converters"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="XPlayer.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="XPlayer.Desktop">
+
+    <suki:SukiWindow.Hosts>
+        <suki:SukiToastHost Manager="{Binding ToastManager}" />
+        <suki:SukiDialogHost Manager="{Binding DialogManager}" />
+    </suki:SukiWindow.Hosts>
+
+    <suki:SukiWindow.MenuItems>
+        <MenuItem Header="{lang:Localize ToggleMode}">
+            <MenuItem Command="{Binding ToggleBaseThemeCommand}" Header="{Binding BaseTheme}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Lightbulb" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding ToggleTitleBarCommand}"
+                      Header="{lang:Localize TitleBar}"
+                      ToolTip.Tip="{lang:Localize TitleBarTip}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon
+                        Kind="{Binding TitleBarVisible, Converter={x:Static converters:BoolToIconConverters.Visibility}}" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{lang:Localize FullScreen}"
+                      PointerPressed="MakeFullScreenPressed"
+                      ToolTip.Tip="{lang:Localize FullScreenTip}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Fullscreen" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="{lang:Localize Theme}">
+            <MenuItem Click="ThemeMenuItem_OnClick"
+                      Header="{lang:Localize SwitchTo}"
+                      ItemsSource="{Binding Themes}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Color" />
+                </MenuItem.Icon>
+                <MenuItem.DataTemplates>
+                    <DataTemplate DataType="{x:Type suki:SukiColorTheme}">
+                        <TextBlock Foreground="{Binding PrimaryBrush}" Text="{Binding DisplayName}" />
+                    </DataTemplate>
+                </MenuItem.DataTemplates>
+            </MenuItem>
+            <MenuItem Header="-" />
+            <MenuItem Command="{Binding CreateCustomThemeCommand}" Header="{lang:Localize CreateCustom}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Colorize" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </MenuItem>
+    </suki:SukiWindow.MenuItems>
+
+    <suki:SukiSideMenu IsSearchEnabled="True"
+                       ItemsSource="{Binding Pages}" SelectedItem="{Binding ActivePage}">
+
+        <suki:SukiSideMenu.Styles>
+            <Style Selector="Image.AppIcon">
+                <Setter Property="Transitions">
+                    <Transitions>
+                        <DoubleTransition Property="Opacity" Duration="0.1" />
+                    </Transitions>
+                </Setter>
+                <Style Selector="^:pointerover">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Style>
+            </Style>
+        </suki:SukiSideMenu.Styles>
+        <suki:SukiSideMenu.ItemTemplate>
+            <DataTemplate>
+                <suki:SukiSideMenuItem Header="{Binding DisplayName}">
+                    <suki:SukiSideMenuItem.Icon>
+                        <avalonia:MaterialIcon Kind="{Binding Icon}" />
+                    </suki:SukiSideMenuItem.Icon>
+                </suki:SukiSideMenuItem>
+            </DataTemplate>
+        </suki:SukiSideMenu.ItemTemplate>
+
+        <!-- <suki:SukiSideMenu.HeaderContent> -->
+        <!--     <TextBlock HorizontalAlignment="Center" Text="{x:Static lang:Resources.AppName}" FontWeight="Bold" FontSize="20"/> -->
+        <!-- </suki:SukiSideMenu.HeaderContent> -->
+        <suki:SukiSideMenu.HeaderContent>
+            <StackPanel>
+                <!-- <Image Width="80" -->
+                <!--        Height="80" -->
+                <!--        Margin="30,10,30,30" -->
+                <!--        Classes="AppIcon" -->
+                <!--        Source="/Assets/easychat-logo.png" -->
+                <!--        PointerPressed="InputElement_OnPointerPressed" -->
+                <!--        Cursor="Hand" -->
+                <!--        ToolTip.ShowDelay="0" -->
+                <!--        ToolTip.Tip="{lang:Localize Resources.ToggleMenuTip}" /> -->
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 -20 0 0"
+                           Text="{lang:Localize AppName}" FontWeight="Bold" />
+            </StackPanel>
+        </suki:SukiSideMenu.HeaderContent>
+
+        <suki:SukiSideMenu.FooterContent>
+            <StackPanel>
+                <!-- <TextBlock HorizontalAlignment="Center" Text="{x:Static lang:Resources.Copyright}" /> -->
+                <TextBlock HorizontalAlignment="Center" Text="@ SwaggyMacro" />
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel.Styles>
+                        <Style Selector="Button">
+                            <Setter Property="Command" Value="{Binding OpenUrlCommand}" />
+                        </Style>
+                        <Style Selector="avalonia|MaterialIcon">
+                            <Setter Property="Width" Value="25" />
+                            <Setter Property="Height" Value="25" />
+                        </Style>
+                    </StackPanel.Styles>
+                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
+                    <Button Classes="Basic"
+                            Cursor="Hand"
+                            CommandParameter="https://github.com/SwaggyMacro/EasyChat"
+                            ToolTip.Tip="{lang:Localize OpenOnGithub}">
+                        <avalonia:MaterialIcon Kind="Github" />
+                    </Button>
+                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
+                    <Button Classes="Basic"
+                            Cursor="Hand"
+                            CommandParameter="https://github.com/SwaggyMacro/EasyChat"
+                            ToolTip.Tip="{lang:Localize OpenOnOfficialSite}">
+                        <avalonia:MaterialIcon Kind="Web" />
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </suki:SukiSideMenu.FooterContent>
+    </suki:SukiSideMenu>
+</Window>
