@@ -107,4 +107,7 @@
     <data name="CloseToTrayPromptTitle" xml:space="preserve">
         <value>关闭操作</value>
     </data>
+    <data name="LanguageChanged" xml:space="preserve">
+        <value>语言已更改</value>
+    </data>
 </root>

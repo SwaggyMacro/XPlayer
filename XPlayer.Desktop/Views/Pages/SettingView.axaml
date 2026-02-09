@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="XPlayer.Desktop.Views.Pages.SettingView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
+             xmlns:pages="clr-namespace:XPlayer.Desktop.ViewModels.Pages"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:settings="clr-namespace:XPlayer.Desktop.Views.Pages.Settings"
+             xmlns:lang="clr-namespace:XPlayer.Lang;assembly=XPlayer.Lang"
+             x:DataType="pages:SettingViewModel"
+             mc:Ignorable="d">
+
+    <Panel>
+        <!-- Loading overlay - shown initially -->
+        <Grid x:Name="LoadingOverlay" IsVisible="True">
+            <!-- Dark semi-transparent background -->
+            <Border Background="#80000000" />
+            <StackPanel Spacing="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <suki:Loading Width="50" Height="50" />
+                <TextBlock Text="{lang:Localize Loading}" 
+                           HorizontalAlignment="Center" 
+                           Opacity="0.7" />
+            </StackPanel>
+        </Grid>
+        
+        <!-- Settings content - hidden initially, shown after lazy load -->
+        <ScrollViewer x:Name="SettingsContent" IsVisible="False">
+            <suki:SettingsLayout>
+                <suki:SettingsLayout.Items>
+                    <objectModel:ObservableCollection x:TypeArguments="suki:SettingsLayoutItem">
+                        <suki:SettingsLayoutItem Header="{lang:Localize General}">
+                            <suki:SettingsLayoutItem.Content>
+                                <settings:GeneralSettingsView DataContext="{Binding}" />
+                            </suki:SettingsLayoutItem.Content>
+                        </suki:SettingsLayoutItem>
+                    </objectModel:ObservableCollection>
+                </suki:SettingsLayout.Items>
+            </suki:SettingsLayout>
+        </ScrollViewer>
+    </Panel>
+
+</UserControl>

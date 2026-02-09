@@ -154,4 +154,7 @@
   <data name="CloseToTrayPromptTitle" xml:space="preserve">
     <value>Closing Action</value>
   </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Language Changed</value>
+  </data>
 </root>

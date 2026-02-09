@@ -12,4 +12,11 @@ public class General : ReactiveObject
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     } = WindowClosingBehavior.Ask;
+    
+    [JsonProperty]
+    public string? Language
+    {
+        get => field ?? "English";
+        set => this.RaiseAndSetIfChanged(ref field, value ?? "English");
+    } = "English";
 }
