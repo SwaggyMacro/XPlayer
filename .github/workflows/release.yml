@@ -30,9 +30,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish EasyChat
+      - name: Publish XPlayer
         run: |
-          dotnet publish ./EasyChat/EasyChat.csproj -c Release -r win-x64 --self-contained -o ./publish
+          dotnet publish ./XPlayer.Desktop/XPlayer.Desktop.csproj -c Release -r win-x64 --self-contained -o ./publish
 
       - name: Get Version
         id: get_version
@@ -42,7 +42,7 @@ jobs:
             VERSION=${GITHUB_REF#refs/tags/v}
             echo "Used Tag Version: $VERSION"
           else
-            VERSION=$(dotnet msbuild EasyChat/EasyChat.csproj -getProperty:Version)
+            VERSION=$(dotnet msbuild XPlayer.Desktop/XPlayer.Desktop.csproj -getProperty:Version)
             echo "Used CSPROJ Version: $VERSION"
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -58,7 +58,7 @@ jobs:
         
       - name: Pack with Velopack
         run: |
-          vpk pack -u EasyChat -v ${{ env.VERSION }} -p ./publish -e EasyChat.exe
+          vpk pack -u XPlayer -v ${{ env.VERSION }} -p ./publish -e XPlayer.exe
 
       - name: Generate Changelog
         id: changelog
@@ -93,14 +93,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: EasyChat-Setup
+          name: XPlayer-Setup
           path: Releases/*Setup.exe
 
       - name: Upload Portable
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: EasyChat-Portable
+          name: XPlayer-Portable
           path: Releases/*.zip
 
       - name: Upload Velopack Assets

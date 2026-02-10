@@ -26,9 +26,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish EasyChat
+      - name: Publish XPlayer
         run: |
-          dotnet publish ./EasyChat/EasyChat.csproj -c Release -r win-x64 --self-contained -o ./publish
+          dotnet publish ./XPlayer.Desktop/XPlayer.Desktop.csproj -c Release -r win-x64 --self-contained -o ./publish
 
       - name: Get Short SHA
         id: vars
@@ -36,10 +36,10 @@ jobs:
         run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Compress Publish Directory
-        run: Compress-Archive -Path ./publish/* -DestinationPath ./EasyChat-Build-${{ steps.vars.outputs.SHORT_SHA }}.zip
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./XPlayer-Build-${{ steps.vars.outputs.SHORT_SHA }}.zip
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: EasyChat-Build-${{ steps.vars.outputs.SHORT_SHA }}
-          path: ./EasyChat-Build-${{ steps.vars.outputs.SHORT_SHA }}.zip
+          name: XPlayer-Build-${{ steps.vars.outputs.SHORT_SHA }}
+          path: ./XPlayer-Build-${{ steps.vars.outputs.SHORT_SHA }}.zip
