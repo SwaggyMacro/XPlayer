@@ -10,6 +10,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="XPlayer.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        WindowStartupLocation="CenterScreen"
         Icon="/Assets/xplayer-logo.ico"
         Title="XPlayer.Desktop">
 
@@ -108,35 +109,60 @@
         </suki:SukiSideMenu.HeaderContent>
 
         <suki:SukiSideMenu.FooterContent>
-            <StackPanel>
-                <!-- <TextBlock HorizontalAlignment="Center" Text="{x:Static lang:Resources.Copyright}" /> -->
-                <TextBlock HorizontalAlignment="Center" Text="@ SwaggyMacro" />
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <StackPanel.Styles>
-                        <Style Selector="Button">
-                            <Setter Property="Command" Value="{Binding OpenUrlCommand}" />
-                        </Style>
-                        <Style Selector="avalonia|MaterialIcon">
-                            <Setter Property="Width" Value="25" />
-                            <Setter Property="Height" Value="25" />
-                        </Style>
-                    </StackPanel.Styles>
-                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
-                    <Button Classes="Basic"
-                            Cursor="Hand"
-                            CommandParameter="https://github.com/SwaggyMacro/EasyChat"
-                            ToolTip.Tip="{lang:Localize OpenOnGithub}">
-                        <avalonia:MaterialIcon Kind="Github" />
-                    </Button>
-                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
-                    <Button Classes="Basic"
-                            Cursor="Hand"
-                            CommandParameter="https://github.com/SwaggyMacro/EasyChat"
-                            ToolTip.Tip="{lang:Localize OpenOnOfficialSite}">
-                        <avalonia:MaterialIcon Kind="Web" />
-                    </Button>
-                </StackPanel>
-            </StackPanel>
+            <Button Classes="Basic" Cursor="Hand" Padding="8" Margin="20 0 0 0" HorizontalContentAlignment="Stretch"
+                    HorizontalAlignment="Stretch">
+                <Button.Flyout>
+                    <MenuFlyout Placement="TopEdgeAlignedLeft">
+                        <MenuItem Header="{lang:Localize MediaSources}"
+                                  Command="{Binding ShowMediaSourcesCommand}">
+                            <MenuItem.Icon>
+                                <avalonia:MaterialIcon Kind="FolderMultiple" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="{lang:Localize SwitchAccount}"
+                                  Command="{Binding SwitchAccountCommand}">
+                            <MenuItem.Icon>
+                                <avalonia:MaterialIcon Kind="AccountSwitch" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="{lang:Localize Logout}"
+                                  Command="{Binding LogoutCommand}">
+                            <MenuItem.Icon>
+                                <avalonia:MaterialIcon Kind="Logout" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="{lang:Localize ExitApp}"
+                                  Command="{Binding ExitAppCommand}">
+                            <MenuItem.Icon>
+                                <avalonia:MaterialIcon Kind="ExitToApp" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+                
+                <!-- User info panel -->
+                <DockPanel LastChildFill="True">
+                    <Border DockPanel.Dock="Left" CornerRadius="20" ClipToBounds="True" 
+                            Width="40" Height="40">
+                        <Image Source="{Binding MediaServerService.UserAvatar}"
+                               Stretch="UniformToFill" />
+                    </Border>
+                    <avalonia:MaterialIcon DockPanel.Dock="Right" Kind="ChevronUp" 
+                                           Margin="20 0 0 0"
+                                           Width="16" Height="16" Opacity="0.5"
+                                           VerticalAlignment="Center" />
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding MediaServerService.DisplayName}" 
+                                   FontWeight="SemiBold" FontSize="13"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding MediaServerService.StatusText}" 
+                                   FontSize="11" Opacity="0.6"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </DockPanel>
+            </Button>
         </suki:SukiSideMenu.FooterContent>
     </suki:SukiSideMenu>
 </Window>

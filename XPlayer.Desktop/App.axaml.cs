@@ -105,6 +105,11 @@ public class App : Application
             
             services.AddSingleton<MainWindowViewModel>();
             
+            // Media Server Services
+            services.AddSingleton<XPlayer.Core.Models.IClientProfile, XPlayer.Desktop.Services.Media.DesktopClientProfile>();
+            services.AddSingleton<XPlayer.Core.Network.IMediaProvider, XPlayer.Providers.Jellyfin.JellyfinMediaProvider>();
+            services.AddSingleton<XPlayer.Desktop.Services.Media.MediaServerService>();
+            
             // Update Check Service
             services.AddSingleton<UpdateCheckService>();
             

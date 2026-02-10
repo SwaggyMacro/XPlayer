@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Collections;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
 using ReactiveUI;
 using SukiUI;
@@ -11,6 +14,7 @@ using SukiUI.Toasts;
 using XPlayer.Desktop.Common;
 using XPlayer.Desktop.Models;
 using XPlayer.Desktop.Services;
+using XPlayer.Desktop.Services.Media;
 using XPlayer.Lang;
 
 namespace XPlayer.Desktop.ViewModels;
@@ -56,11 +60,20 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ToggleTitleBarCommand { get; }
     public ReactiveCommand<string, Unit> OpenUrlCommand { get; }
     
+    // User menu
+    public MediaServerService MediaServerService { get; }
+    public ReactiveCommand<Unit, Unit> ShowMediaSourcesCommand { get; }
+    public ReactiveCommand<Unit, Unit> SwitchAccountCommand { get; }
+    public ReactiveCommand<Unit, Unit> LogoutCommand { get; }
+    public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
+    
     public MainWindowViewModel(IEnumerable<Page> pages,
         PageNavigationService pageNavigationService,
         ISukiToastManager toastManager,
-        ISukiDialogManager dialogManager)
+        ISukiDialogManager dialogManager,
+        MediaServerService mediaServerService)
     {
+        MediaServerService = mediaServerService;
         // Sort and assign pages
         var sortedPages = pages.OrderBy(x => x.Index).ThenBy(x => x.DisplayName).ToList();
         _pages = new AvaloniaList<Page>(sortedPages);
@@ -81,6 +94,12 @@ public class MainWindowViewModel : ViewModelBase
         CreateCustomThemeCommand = ReactiveCommand.Create(CreateCustomTheme);
         ToggleTitleBarCommand = ReactiveCommand.Create(ToggleTitleBar);
         OpenUrlCommand = ReactiveCommand.Create<string>(OpenUrl);
+        
+        // User menu commands
+        ShowMediaSourcesCommand = ReactiveCommand.Create(ShowMediaSources);
+        SwitchAccountCommand = ReactiveCommand.Create(SwitchAccount);
+        LogoutCommand = ReactiveCommand.CreateFromTask(LogoutAsync);
+        ExitAppCommand = ReactiveCommand.Create(ExitApp);
 
         // Navigation
         pageNavigationService.NavigationRequested += pageType =>
@@ -138,5 +157,42 @@ public class MainWindowViewModel : ViewModelBase
     private static void OpenUrl(string url)
     {
         UrlUtilities.OpenUrl(url);
+    }
+    
+    private void ShowMediaSources()
+    {
+        ToastManager.CreateSimpleInfoToast()
+            .WithTitle(LocalizationManager.Instance["MediaSources"])
+            .WithContent("Coming soon...")
+            .Queue();
+    }
+
+    private void SwitchAccount()
+    {
+        ToastManager.CreateSimpleInfoToast()
+            .WithTitle(LocalizationManager.Instance["SwitchAccount"])
+            .WithContent("Coming soon...")
+            .Queue();
+    }
+
+    private async Task LogoutAsync()
+    {
+        await MediaServerService.LogoutAsync();
+        ToastManager.CreateSimpleInfoToast()
+            .WithTitle(LocalizationManager.Instance["Logout"])
+            .WithContent("✓")
+            .Queue();
+    }
+
+    private void ExitApp()
+    {
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow is Views.MainWindow mainWindow)
+            {
+                mainWindow.IsExiting = true;
+            }
+            desktop.Shutdown();
+        }
     }
 }

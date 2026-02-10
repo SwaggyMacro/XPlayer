@@ -131,4 +131,19 @@
     <data name="Option_Minimize" xml:space="preserve">
         <value>最小化</value>
     </data>
+    <data name="MediaSources" xml:space="preserve">
+        <value>媒体源</value>
+    </data>
+    <data name="SwitchAccount" xml:space="preserve">
+        <value>切换账号</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>退出登录</value>
+    </data>
+    <data name="NotConnected" xml:space="preserve">
+        <value>未连接</value>
+    </data>
+    <data name="GuestUser" xml:space="preserve">
+        <value>访客</value>
+    </data>
 </root>

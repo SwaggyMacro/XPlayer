@@ -6,6 +6,8 @@
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationIcon>Assets\xplayer-logo.ico</ApplicationIcon>
+
+        <Version>0.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,6 +43,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\XPlayer.Core\XPlayer.Core.csproj" />
       <ProjectReference Include="..\XPlayer.Lang\XPlayer.Lang.csproj" />
+      <ProjectReference Include="..\XPlayer.Providers.Jellyfin\XPlayer.Providers.Jellyfin.csproj" />
     </ItemGroup>
 </Project>

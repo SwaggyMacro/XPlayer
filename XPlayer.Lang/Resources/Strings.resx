@@ -178,4 +178,19 @@
   <data name="Option_Minimize" xml:space="preserve">
     <value>Minimize</value>
   </data>
+  <data name="MediaSources" xml:space="preserve">
+    <value>Media Sources</value>
+  </data>
+  <data name="SwitchAccount" xml:space="preserve">
+    <value>Switch Account</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
+  <data name="GuestUser" xml:space="preserve">
+    <value>Guest</value>
+  </data>
 </root>
