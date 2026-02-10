@@ -195,7 +195,7 @@ public class App : Application
     {
         if (_trayIcon != null) return;
 
-        using var stream = Avalonia.Platform.AssetLoader.Open(new Uri("avares://EasyChat/Assets/easychat-logo.ico"));
+        using var stream = Avalonia.Platform.AssetLoader.Open(new Uri("avares://XPlayer.Desktop/Assets/xplayer-logo.ico"));
         _trayIcon = new TrayIcon
         {
             Icon = new WindowIcon(stream),
