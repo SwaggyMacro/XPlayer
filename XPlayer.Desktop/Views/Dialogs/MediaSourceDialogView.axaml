@@ -1,0 +1,150 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dialogs="clr-namespace:XPlayer.Desktop.ViewModels.Dialogs"
+             xmlns:lang="clr-namespace:XPlayer.Lang;assembly=XPlayer.Lang"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:config="clr-namespace:XPlayer.Desktop.Models.Configuration"
+             xmlns:converters="clr-namespace:XPlayer.Desktop.Converters"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+             x:Class="XPlayer.Desktop.Views.Dialogs.MediaSourceDialogView"
+             x:DataType="dialogs:MediaSourceDialogViewModel">
+    
+    <UserControl.Resources>
+        <converters:BoolToPasswordCharConverter x:Key="BoolToPasswordCharConverter" />
+    </UserControl.Resources>
+    
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header -->
+        <DockPanel Margin="0,0,0,20">
+            <TextBlock Text="{Binding DialogTitle}" FontSize="24" FontWeight="SemiBold"
+                       VerticalAlignment="Center" />
+            <Button Command="{Binding CloseCommand}" Classes="Basic"
+                    HorizontalAlignment="Right" DockPanel.Dock="Right"
+                    IsVisible="{Binding !IsEditing}">
+                <avalonia:MaterialIcon Kind="Close" Width="24" Height="24" />
+            </Button>
+            <Button Command="{Binding CancelEditCommand}" Classes="Basic"
+                    HorizontalAlignment="Right" DockPanel.Dock="Right"
+                    IsVisible="{Binding IsEditing}">
+                <avalonia:MaterialIcon Kind="ArrowLeft" Width="24" Height="24" />
+            </Button>
+        </DockPanel>
+
+        <!-- List View -->
+        <Grid Grid.Row="1" IsVisible="{Binding !IsEditing}">
+            <Grid RowDefinitions="*,Auto">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Sources}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="config:MediaSourceConfig">
+                                <Border CornerRadius="8" Margin="0,0,0,10" Padding="15"
+                                        BoxShadow="0 4 10 0 #1A000000" Background="{DynamicResource SukiBackground}"
+                                        BorderThickness="1" BorderBrush="{DynamicResource SukiBorderBrush}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <!-- Icon -->
+                                        <Border Grid.Column="0" Width="48" Height="48" CornerRadius="8"
+                                                Background="{DynamicResource SukiPrimaryColor}" Margin="0,0,15,0">
+                                            <avalonia:MaterialIcon Kind="Television" Width="24" Height="24" 
+                                                                   Foreground="White" />
+                                        </Border>
+
+                                        <!-- Info -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" />
+                                            <TextBlock Text="{Binding Url}" FontSize="12" Opacity="0.7" />
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <Border CornerRadius="4" Background="{DynamicResource SukiControlBorderBrush}" Padding="6,2">
+                                                    <TextBlock Text="{Binding ProviderType}" FontSize="10" />
+                                                </Border>
+                                                <TextBlock Text="{Binding Username}" FontSize="12" VerticalAlignment="Center" Opacity="0.7" />
+                                                <TextBlock Text="Default" IsVisible="{Binding IsDefault}" 
+                                                           Foreground="{DynamicResource SukiPrimaryColor}" 
+                                                           FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Actions -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                            <Button Classes="Flat" 
+                                                    Command="{Binding $parent[UserControl].((dialogs:MediaSourceDialogViewModel)DataContext).ConnectSourceCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="{lang:Localize Connect}" 
+                                                    IsVisible="{Binding !IsDefault}" />
+                                            
+                                            <Button Classes="Basic" 
+                                                    Command="{Binding $parent[UserControl].((dialogs:MediaSourceDialogViewModel)DataContext).EditSourceCommand}"
+                                                    CommandParameter="{Binding}" 
+                                                    ToolTip.Tip="{lang:Localize Edit}">
+                                                <avalonia:MaterialIcon Kind="Pencil" Width="20" Height="20" />
+                                            </Button>
+                                            
+                                            <Button Classes="Basic" 
+                                                    Command="{Binding $parent[UserControl].((dialogs:MediaSourceDialogViewModel)DataContext).DeleteSourceCommand}"
+                                                    CommandParameter="{Binding}" 
+                                                    ToolTip.Tip="{lang:Localize Delete}">
+                                                <avalonia:MaterialIcon Kind="Delete" Width="20" Height="20" Foreground="Red" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Button Grid.Row="1" Classes="Flat" HorizontalAlignment="Center" Margin="0,20,0,0"
+                        Command="{Binding AddNewCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <avalonia:MaterialIcon Kind="Plus" />
+                        <TextBlock Text="{lang:Localize AddMediaSource}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <!-- Edit Form -->
+        <Grid Grid.Row="1" IsVisible="{Binding IsEditing}" RowDefinitions="*,Auto">
+            <StackPanel Spacing="15" MaxWidth="500" HorizontalAlignment="Stretch">
+                <TextBox Text="{Binding EditName}" Watermark="{lang:Localize Name}" 
+                         UseFloatingWatermark="True" Classes="Outline" />
+                
+                <TextBox Text="{Binding EditUrl}" Watermark="{lang:Localize ServerAddress}" 
+                         UseFloatingWatermark="True" Classes="Outline" />
+                
+                <ComboBox ItemsSource="{Binding ProviderTypes}" SelectedItem="{Binding EditProvider}"
+                          HorizontalAlignment="Stretch" Classes="Outline"
+                          PlaceholderText="{lang:Localize ProviderType}" />
+                
+                <TextBox Text="{Binding EditUsername}" Watermark="{lang:Localize Username}" 
+                         UseFloatingWatermark="True" Classes="Outline" />
+                
+                <TextBox Text="{Binding EditPassword}" Watermark="{lang:Localize Password}" 
+                         PasswordChar="{Binding IsPasswordVisible, Converter={StaticResource BoolToPasswordCharConverter}}"
+                         UseFloatingWatermark="True" Classes="Outline">
+                    <TextBox.InnerRightContent>
+                         <Button Classes="Basic" Command="{Binding TogglePasswordVisibilityCommand}" 
+                                 Padding="4" Margin="0,0,5,0" Cursor="Hand">
+                             <Panel>
+                                 <avalonia:MaterialIcon Kind="Eye" Width="20" Height="20" IsVisible="{Binding !IsPasswordVisible}" />
+                                 <avalonia:MaterialIcon Kind="EyeOff" Width="20" Height="20" IsVisible="{Binding IsPasswordVisible}" />
+                             </Panel>
+                         </Button>
+                    </TextBox.InnerRightContent>
+                </TextBox>
+                
+                <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="15" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Classes="Basic" Command="{Binding CancelEditCommand}" Content="{lang:Localize Cancel}" 
+                        IsEnabled="{Binding !IsBusy}" />
+                <Button Classes="Flat" Command="{Binding TestConnectionCommand}" Content="{lang:Localize TestConnection}" 
+                        IsEnabled="{Binding !IsBusy}" />
+                <Button Classes="Flat Primary" Command="{Binding SaveAndConnectCommand}" Content="{lang:Localize SaveAndConnect}" 
+                        IsEnabled="{Binding !IsBusy}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

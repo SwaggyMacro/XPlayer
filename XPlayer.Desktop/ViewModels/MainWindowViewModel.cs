@@ -63,7 +63,6 @@ public class MainWindowViewModel : ViewModelBase
     // User menu
     public MediaServerService MediaServerService { get; }
     public ReactiveCommand<Unit, Unit> ShowMediaSourcesCommand { get; }
-    public ReactiveCommand<Unit, Unit> SwitchAccountCommand { get; }
     public ReactiveCommand<Unit, Unit> LogoutCommand { get; }
     public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
     
@@ -97,7 +96,6 @@ public class MainWindowViewModel : ViewModelBase
         
         // User menu commands
         ShowMediaSourcesCommand = ReactiveCommand.Create(ShowMediaSources);
-        SwitchAccountCommand = ReactiveCommand.Create(SwitchAccount);
         LogoutCommand = ReactiveCommand.CreateFromTask(LogoutAsync);
         ExitAppCommand = ReactiveCommand.Create(ExitApp);
 
@@ -161,18 +159,10 @@ public class MainWindowViewModel : ViewModelBase
     
     private void ShowMediaSources()
     {
-        ToastManager.CreateSimpleInfoToast()
-            .WithTitle(LocalizationManager.Instance["MediaSources"])
-            .WithContent("Coming soon...")
-            .Queue();
-    }
-
-    private void SwitchAccount()
-    {
-        ToastManager.CreateSimpleInfoToast()
-            .WithTitle(LocalizationManager.Instance["SwitchAccount"])
-            .WithContent("Coming soon...")
-            .Queue();
+        DialogManager.CreateDialog()
+            .WithTitle(LocalizationManager.Instance["MediaSourceManagement"])
+            .WithViewModel(dialog => new Dialogs.MediaSourceDialogViewModel(dialog, MediaServerService))
+            .TryShow();
     }
 
     private async Task LogoutAsync()

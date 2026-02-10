@@ -69,6 +69,37 @@ namespace XPlayer.Providers.Jellyfin
             return false;
         }
 
+        public async Task<bool> AuthenticateByTokenAsync(string token, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(token)) return false;
+
+            var authHeader = $"MediaBrowser Client=\"{_clientProfile.ClientName}\", Device=\"{_clientProfile.DeviceName}\", DeviceId=\"{_clientProfile.DeviceId}\", Version=\"{_clientProfile.ClientVersion}\", Token=\"{token}\"";
+            _httpClient.DefaultRequestHeaders.Remove("X-Emby-Authorization");
+            _httpClient.DefaultRequestHeaders.Add("X-Emby-Authorization", authHeader);
+
+            try
+            {
+                // Verify token by fetching current user
+                var response = await _httpClient.GetAsync("Users/Me", cancellationToken);
+                if (response.IsSuccessStatusCode)
+                {
+                    var userJson = await response.Content.ReadFromJsonAsync<JsonElement>(cancellationToken: cancellationToken);
+                    CurrentUser = ParseUserInfo(userJson);
+                    CurrentUserId = CurrentUser?.Id;
+                    AccessToken = token;
+                    return true;
+                }
+            }
+            catch
+            {
+                // Ignore errors
+            }
+
+            // If failed, clear headers
+            _httpClient.DefaultRequestHeaders.Remove("X-Emby-Authorization");
+            return false;
+        }
+
         public async Task<IUserInfo?> GetCurrentUserAsync(CancellationToken cancellationToken = default)
         {
             if (!IsAuthenticated || CurrentUserId == null) return null;

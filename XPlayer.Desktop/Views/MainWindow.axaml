@@ -12,12 +12,19 @@
         x:DataType="vm:MainWindowViewModel"
         WindowStartupLocation="CenterScreen"
         Icon="/Assets/xplayer-logo.ico"
-        Title="XPlayer.Desktop">
+        Title="XPlayer">
 
     <suki:SukiWindow.Hosts>
         <suki:SukiToastHost Manager="{Binding ToastManager}" />
         <suki:SukiDialogHost Manager="{Binding DialogManager}" />
     </suki:SukiWindow.Hosts>
+    
+    <suki:SukiWindow.LogoContent>
+        <Image Width="20"
+               Height="20"
+               VerticalAlignment="Center"
+               Source="/Assets/xplayer-logo.ico" />
+    </suki:SukiWindow.LogoContent>
 
     <suki:SukiWindow.MenuItems>
         <MenuItem Header="{lang:Localize ToggleMode}">
@@ -117,13 +124,6 @@
                                   Command="{Binding ShowMediaSourcesCommand}">
                             <MenuItem.Icon>
                                 <avalonia:MaterialIcon Kind="FolderMultiple" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Header="{lang:Localize SwitchAccount}"
-                                  Command="{Binding SwitchAccountCommand}">
-                            <MenuItem.Icon>
-                                <avalonia:MaterialIcon Kind="AccountSwitch" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="{lang:Localize Logout}"

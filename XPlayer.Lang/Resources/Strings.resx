@@ -193,4 +193,62 @@
   <data name="GuestUser" xml:space="preserve">
     <value>Guest</value>
   </data>
+
+  <data name="MediaSourceManagement" xml:space="preserve">
+    <value>Media Source Management</value>
+  </data>
+  <data name="AddMediaSource" xml:space="preserve">
+    <value>Add Media Source</value>
+  </data>
+  <data name="EditMediaSource" xml:space="preserve">
+    <value>Edit Media Source</value>
+  </data>
+  <data name="ServerAddress" xml:space="preserve">
+    <value>Server Address</value>
+  </data>
+  <data name="ProviderType" xml:space="preserve">
+    <value>Provider Type</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>Test Connection</value>
+  </data>
+  <data name="SaveAndConnect" xml:space="preserve">
+    <value>Save &amp; Connect</value>
+  </data>
+  <data name="ConnectionSuccess" xml:space="preserve">
+    <value>Connected successfully</value>
+  </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Connection failed</value>
+  </data>
+  <data name="AuthFailed" xml:space="preserve">
+    <value>Authentication failed</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you want to delete this media source?</value>
+  </data>
 </root>
