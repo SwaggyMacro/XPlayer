@@ -7,6 +7,11 @@ namespace XPlayer.Desktop.Models;
 public abstract class Page : ViewModelBase
 {
     private string _displayName;
+    // Keep reference to avoid GC if necessary, though event subscription keeps it alive until disposed.
+    // Ideally we should make Page IDisposable but ViewModelBase is not always disposed properly by consumers.
+    // However, ObservedLocalizedString subscribes to a singleton, so it will live forever unless disposed.
+    // For now, let's keep a reference to it.
+    private readonly XPlayer.Lang.ObservedLocalizedString _observedTitle;
 
     private MaterialIconKind _icon;
 
@@ -14,7 +19,8 @@ public abstract class Page : ViewModelBase
 
     protected Page(string displayName, MaterialIconKind icon, int index = 0)
     {
-        _displayName = displayName;
+        _displayName = displayName; 
+        _observedTitle = new Lang.ObservedLocalizedString(displayName, val => DisplayName = val);
         _icon = icon;
         _index = index;
     }

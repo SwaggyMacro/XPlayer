@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Resources;
+using System.Threading;
 
 namespace XPlayer.Lang;
 
@@ -62,7 +63,13 @@ public class LocalizationManager : INotifyPropertyChanged
             return;
 
         _currentCulture = culture;
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
+
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null)); // Refresh all bindings
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item"));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCulture)));
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -30,7 +31,7 @@ public class SettingViewModel : Page
 
 
     public SettingViewModel(ISukiDialogManager dialogManager, ISukiToastManager toastManager, IConfigurationService configurationService) : base(
-        LocalizationManager.Instance["Settings"], MaterialIconKind.Settings, 1)
+        "Settings", MaterialIconKind.Settings, 1)
     {
         _dialogManager = dialogManager;
         _toastManager = toastManager;
@@ -46,21 +47,17 @@ public class SettingViewModel : Page
 
     public LanguageDefinition? SelectedLanguage
     {
-        get => Languages.FirstOrDefault(l => l.EnglishName == GeneralConf?.Language) ?? LanguageKeys.English;
+        get => Languages.FirstOrDefault(l => l.Id == GeneralConf?.Language) ?? LanguageKeys.English;
         set
         {
-            if (value != null && GeneralConf?.Language != value.EnglishName)
+            if (value != null && GeneralConf?.Language != value.Id)
             {
-                GeneralConf?.Language = value.EnglishName;
+                GeneralConf?.Language = value.Id;
                 this.RaisePropertyChanged();
 
                 // Update Culture
-                var culture = value.EnglishName switch
-                {
-                    "Simplified Chinese" => new CultureInfo("zh-CN"),
-                    _ => new CultureInfo("en-US")
-                };
-                LocalizationManager.Instance.CurrentCulture = culture;
+                var culture = new CultureInfo(value.Id);
+                LocalizationManager.Instance.SetCulture(culture);
                 Thread.CurrentThread.CurrentUICulture = culture;
                 Thread.CurrentThread.CurrentCulture = culture;
 

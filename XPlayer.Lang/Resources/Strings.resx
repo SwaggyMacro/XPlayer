@@ -157,4 +157,25 @@
   <data name="LanguageChanged" xml:space="preserve">
     <value>Language Changed</value>
   </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="ClosingBehavior" xml:space="preserve">
+    <value>Closing Behavior</value>
+  </data>
+  <data name="Option_Ask" xml:space="preserve">
+    <value>Ask</value>
+  </data>
+  <data name="Option_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Option_Minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
 </root>

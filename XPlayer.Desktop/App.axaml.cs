@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -16,7 +17,9 @@ using SukiUI.Dialogs;
 using SukiUI.Enums;
 using SukiUI.Toasts;
 using XPlayer.Desktop.Common;
+using XPlayer.Desktop.Constants;
 using XPlayer.Desktop.Models;
+using XPlayer.Desktop.Models.Configuration;
 using XPlayer.Desktop.Services;
 using XPlayer.Desktop.Services.Abstractions;
 using XPlayer.Desktop.ViewModels;
@@ -33,7 +36,21 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        // LocalizationManager.Instance.CurrentCulture = new CultureInfo("zh-CN");
+        try
+        {
+            var generalConf = ConfigUtil.LoadConfig<General>(Constant.General);
+            if (!string.IsNullOrEmpty(generalConf.Language))
+            {
+                var culture = new CultureInfo(generalConf.Language);
+                LocalizationManager.Instance.SetCulture(culture);
+                Thread.CurrentThread.CurrentUICulture = culture;
+                Thread.CurrentThread.CurrentCulture = culture;
+            }
+        }
+        catch (Exception)
+        {
+            // Ignore config load error on startup
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()

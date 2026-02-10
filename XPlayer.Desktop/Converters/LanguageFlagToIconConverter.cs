@@ -23,7 +23,7 @@ public class LanguageFlagToIconConverter : IValueConverter
     {
         if (value is string iconFileName && !string.IsNullOrEmpty(iconFileName))
         {
-            var iconPath = $"avares://XPlayer/Assets/Images/Flags/mini/{iconFileName}";
+            var iconPath = $"avares://XPlayer.Desktop/Assets/Images/Flags/mini/{iconFileName}";
             
             try
             {

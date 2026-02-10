@@ -16,7 +16,7 @@ public class General : ReactiveObject
     [JsonProperty]
     public string? Language
     {
-        get => field ?? "English";
-        set => this.RaiseAndSetIfChanged(ref field, value ?? "English");
-    } = "English";
+        get => field ?? "en-US";
+        set => this.RaiseAndSetIfChanged(ref field, value ?? "en-US");
+    } = "en-US";
 }

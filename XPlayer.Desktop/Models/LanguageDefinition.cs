@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Threading;
 using Newtonsoft.Json;
+using EasyChat.Services.Languages;
 
 namespace XPlayer.Desktop.Models;
 
 /// <summary>
 /// Represents a specific language with supported codes for various providers.
 /// </summary>
-public class LanguageDefinition
+public class LanguageDefinition : System.ComponentModel.INotifyPropertyChanged
 {
     /// <summary>
     /// Internal Unique Identifier for the language (e.g., "en-US", "zh-CN").
@@ -42,7 +43,10 @@ public class LanguageDefinition
         get
         {
             var culture = Thread.CurrentThread.CurrentUICulture;
-            return culture.TwoLetterISOLanguageName == "zh" ? ChineseName : EnglishName;
+            return culture.Name switch{
+                LanguageKeys.ChineseSimplifiedId => ChineseName,
+                _ => EnglishName
+            };
         }
     }
 
@@ -75,5 +79,21 @@ public class LanguageDefinition
         ChineseName = chineseName;
         EnglishName = englishName;
         Icon = icon;
+        
+        XPlayer.Lang.LocalizationManager.Instance.PropertyChanged += (_, e) =>
+        {
+             if (string.IsNullOrEmpty(e.PropertyName) || e.PropertyName == "Item" || e.PropertyName == "Item[]" || e.PropertyName == nameof(XPlayer.Lang.LocalizationManager.CurrentCulture))
+             {
+                 OnPropertyChanged(nameof(LocalizedName));
+                 OnPropertyChanged(nameof(DisplayName));
+             }
+        };
+    }
+    
+    public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+    
+    protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
     }
 }
