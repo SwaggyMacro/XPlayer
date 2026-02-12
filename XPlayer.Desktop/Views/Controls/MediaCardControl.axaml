@@ -1,0 +1,135 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia">
+
+    <Design.PreviewWith>
+        <Border Padding="40" Background="#141414">
+            <controls:MediaCardControl Title="Test Movie" Subtitle="2024" 
+                                        ShowProgress="True" Progress="45" 
+                                        CardWidth="160" CardHeight="240" />
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|MediaCardControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="CardRoot"
+                        Width="{TemplateBinding CardWidth}"
+                        CornerRadius="12"
+                        Background="#1E1E1E"
+                        BoxShadow="0 4 12 0 #30000000"
+                        RenderTransformOrigin="0.5,0.5"
+                        Cursor="Hand">
+                    <StackPanel>
+                        <!-- Poster Image Container -->
+                        <Panel Height="{TemplateBinding CardHeight}">
+                            <Border CornerRadius="12,12,0,0" ClipToBounds="True">
+                                <Panel>
+                                    <!-- Placeholder -->
+                                    <Border Background="#202020">
+                                        <avalonia:MaterialIcon Kind="MovieOutline"
+                                                               Width="48" Height="48"
+                                                               Opacity="0.1"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center" />
+                                    </Border>
+
+                                    <!-- Actual Image -->
+                                    <Image asyncImageLoader:ImageLoader.Source="{Binding ImageUrl, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Stretch="UniformToFill"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+
+                                    <!-- Hover Overlay -->
+                                    <Border x:Name="HoverOverlay"
+                                            Opacity="0"
+                                            Background="#40000000">
+                                        <Border Background="#E0FFFFFF"
+                                                CornerRadius="28"
+                                                Width="56" Height="56"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                BoxShadow="0 4 12 0 #60000000">
+                                            <avalonia:MaterialIcon Kind="Play"
+                                                                   Width="32" Height="32"
+                                                                   Foreground="#2A2A3E"
+                                                                   Margin="4,0,0,0"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center" />
+                                        </Border>
+                                    </Border>
+
+                                    <!-- Progress Bar -->
+                                    <Border VerticalAlignment="Bottom"
+                                            Height="3"
+                                            IsVisible="{TemplateBinding ShowProgress}">
+                                        <Panel>
+                                            <Border Background="#40FFFFFF" />
+                                            <ProgressBar Minimum="0"
+                                                         Maximum="100"
+                                                         Value="{TemplateBinding Progress}"
+                                                         Foreground="#FFD700"
+                                                         Background="Transparent"
+                                                         Height="3" />
+                                        </Panel>
+                                    </Border>
+                                </Panel>
+                            </Border>
+                        </Panel>
+
+                        <!-- Text Container -->
+                        <StackPanel Margin="12,12,12,16" Spacing="4">
+                            <!-- Title -->
+                            <TextBlock Text="{TemplateBinding Title}"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxLines="1" />
+
+                            <!-- Subtitle -->
+                            <TextBlock Text="{TemplateBinding Subtitle}"
+                                       FontSize="11"
+                                       Foreground="#BBBBBB"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxLines="1" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <!-- Hover Effects -->
+    <Style Selector="controls|MediaCardControl:pointerover /template/ Border#CardRoot">
+        <Setter Property="RenderTransform">
+            <ScaleTransform ScaleX="1.04" ScaleY="1.04" />
+        </Setter>
+        <Setter Property="BoxShadow" Value="0 8 24 0 #50000000" />
+        <Setter Property="Background" Value="#2D2D2D" />
+    </Style>
+
+    <Style Selector="controls|MediaCardControl:pointerover /template/ Border#HoverOverlay">
+        <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <!-- Transitions -->
+    <Style Selector="controls|MediaCardControl /template/ Border#CardRoot">
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CubicEaseOut" />
+                <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.2" />
+                <BrushTransition Property="Background" Duration="0:0:0.2" />
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="controls|MediaCardControl /template/ Border#HoverOverlay">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.2" />
+            </Transitions>
+        </Setter>
+    </Style>
+</Styles>

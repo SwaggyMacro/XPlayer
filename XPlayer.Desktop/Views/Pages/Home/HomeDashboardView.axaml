@@ -1,0 +1,248 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Home"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="XPlayer.Desktop.Views.Pages.Home.HomeDashboardView"
+             x:DataType="vm:HomeDashboardViewModel">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Spacing="32" Margin="0,0,0,32">
+
+            <!-- ═══════════════════ Hero Banner ═══════════════════ -->
+            <Panel Height="400"
+                   IsVisible="{Binding HeroBannerItem, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Panel ClipToBounds="True">
+                    <!-- Backdrop Image -->
+                    <Image asyncImageLoader:ImageLoader.Source="{Binding HeroBannerItem.BackdropImageUrl}"
+                           Stretch="UniformToFill"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+
+                    <!-- Dark gradient overlay (bottom) -->
+                    <Border>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0%,30%" EndPoint="0%,100%">
+                                <GradientStop Color="#00000000" Offset="0" />
+                                <GradientStop Color="#E0000000" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Dark gradient overlay (left side for text readability) -->
+                    <Border>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0%,0%" EndPoint="60%,0%">
+                                <GradientStop Color="#80000000" Offset="0" />
+                                <GradientStop Color="#00000000" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Hero Content -->
+                    <StackPanel VerticalAlignment="Bottom" Margin="40,0,40,36" Spacing="10"
+                                MaxWidth="600" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding HeroBannerItem.Name}"
+                                   FontSize="36" FontWeight="Bold"
+                                   Foreground="White"
+                                   TextWrapping="Wrap"
+                                   MaxLines="2" />
+                        <TextBlock Text="{Binding HeroBannerItem.Overview}"
+                                   FontSize="14" Foreground="White"
+                                   Opacity="0.75" MaxLines="2"
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="Wrap"
+                                   LineHeight="20" />
+                        <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,6,0,0">
+                            <Button Classes="Flat Accent" Padding="24,10" CornerRadius="6"
+                                    Command="{Binding OpenItemCommand}"
+                                    CommandParameter="{Binding HeroBannerItem}">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <avalonia:MaterialIcon Kind="Play" Width="20" Height="20" />
+                                    <TextBlock Text="{lang:Localize Play}" VerticalAlignment="Center"
+                                               FontSize="14" FontWeight="SemiBold" />
+                                </StackPanel>
+                            </Button>
+                            <Button Classes="Flat" Padding="24,10" CornerRadius="6"
+                                    Command="{Binding OpenItemCommand}"
+                                    CommandParameter="{Binding HeroBannerItem}"
+                                    Background="#30FFFFFF">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <avalonia:MaterialIcon Kind="InformationOutline" Width="20" Height="20"
+                                                           Foreground="White" />
+                                    <TextBlock Text="{lang:Localize Details}" VerticalAlignment="Center"
+                                               FontSize="14" Foreground="White" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Panel>
+            </Panel>
+
+            <!-- ═══════════════════ Loading ═══════════════════ -->
+            <StackPanel IsVisible="{Binding IsLoading}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="0,40">
+                <TextBlock Text="{lang:Localize Loading}"
+                           FontSize="14" Opacity="0.5"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <!-- ═══════════════════ Continue Watching ═══════════════════ -->
+            <StackPanel Spacing="16" Margin="24,0"
+                        IsVisible="{Binding HasResumeItems}">
+                <TextBlock Text="{lang:Localize ContinueWatching}"
+                           FontSize="22" FontWeight="Bold"
+                           Opacity="0.9" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding ResumeItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="16" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Classes="Flat" Padding="0"
+                                        Command="{Binding $parent[ItemsControl].((vm:HomeDashboardViewModel)DataContext).OpenItemCommand}"
+                                        CommandParameter="{Binding}">
+                                    <controls:MediaCardControl 
+                                        ImageUrl="{Binding ImageUrl}"
+                                        Title="{Binding Name}"
+                                        Subtitle="{Binding ProductionYear}"
+                                        ShowProgress="True"
+                                        Progress="{Binding PlayedPercentage}"
+                                        CardWidth="150" CardHeight="225" />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+
+            <!-- ═══════════════════ Next Up ═══════════════════ -->
+            <StackPanel Spacing="16" Margin="24,0"
+                        IsVisible="{Binding HasNextUpItems}">
+                <TextBlock Text="{lang:Localize NextUp}"
+                           FontSize="22" FontWeight="Bold"
+                           Opacity="0.9" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding NextUpItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="16" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Classes="Flat" Padding="0"
+                                        Command="{Binding $parent[ItemsControl].((vm:HomeDashboardViewModel)DataContext).OpenItemCommand}"
+                                        CommandParameter="{Binding}">
+                                    <controls:MediaCardControl 
+                                        ImageUrl="{Binding ImageUrl}"
+                                        Title="{Binding Name}"
+                                        Subtitle="{Binding ProductionYear}"
+                                        CardWidth="150" CardHeight="225" />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+
+            <!-- ═══════════════════ Latest Additions ═══════════════════ -->
+            <StackPanel Spacing="16" Margin="24,0"
+                        IsVisible="{Binding HasLatestItems}">
+                <TextBlock Text="{lang:Localize LatestAdditions}"
+                           FontSize="22" FontWeight="Bold"
+                           Opacity="0.9" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding LatestItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="16" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Classes="Flat" Padding="0"
+                                        Command="{Binding $parent[ItemsControl].((vm:HomeDashboardViewModel)DataContext).OpenItemCommand}"
+                                        CommandParameter="{Binding}">
+                                    <controls:MediaCardControl 
+                                        ImageUrl="{Binding ImageUrl}"
+                                        Title="{Binding Name}"
+                                        Subtitle="{Binding ProductionYear}"
+                                        CardWidth="150" CardHeight="225" />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+
+            <!-- ═══════════════════ My Libraries ═══════════════════ -->
+            <StackPanel Spacing="16" Margin="24,0"
+                        IsVisible="{Binding HasLibraries}">
+                <TextBlock Text="{lang:Localize MyLibraries}"
+                           FontSize="22" FontWeight="Bold"
+                           Opacity="0.9" />
+                <ItemsControl ItemsSource="{Binding Libraries}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="Flat" Padding="0" Margin="0,0,12,12"
+                                    Command="{Binding $parent[ItemsControl].((vm:HomeDashboardViewModel)DataContext).OpenLibraryCommand}"
+                                    CommandParameter="{Binding}">
+                                <Border CornerRadius="12"
+                                        Width="220" Height="90"
+                                        Cursor="Hand"
+                                        ClipToBounds="True"
+                                        BoxShadow="0 2 8 0 #30000000">
+                                    <Panel>
+                                        <!-- Gradient Background -->
+                                        <Border>
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                                    <GradientStop Color="#252525" Offset="0" />
+                                                    <GradientStop Color="#151515" Offset="1" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+                                        <!-- Content -->
+                                        <StackPanel VerticalAlignment="Center" 
+                                                    HorizontalAlignment="Left"
+                                                    Margin="20,0" Spacing="6">
+                                            <avalonia:MaterialIcon Kind="FolderPlayOutline" 
+                                                                   Width="26" Height="26"
+                                                                   Foreground="{DynamicResource SukiPrimaryColor}"
+                                                                   Opacity="0.9" />
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="White"
+                                                       Opacity="0.85" />
+                                        </StackPanel>
+                                    </Panel>
+                                </Border>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

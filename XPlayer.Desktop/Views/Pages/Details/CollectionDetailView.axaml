@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Details"
+             xmlns:lang="using:XPlayer.Lang"
+             xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+             x:Class="XPlayer.Desktop.Views.Pages.Details.CollectionDetailView"
+             x:DataType="vm:CollectionDetailViewModel">
+
+    <DockPanel>
+        <TextBlock Text="{Binding Collection.Name}" FontSize="24" FontWeight="Bold"
+                   DockPanel.Dock="Top" Margin="16,8,16,16" />
+
+        <ScrollViewer>
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Items}" Margin="16,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="Flat" Padding="0" Margin="0,0,12,12"
+                                    Command="{Binding $parent[ItemsControl].((vm:CollectionDetailViewModel)DataContext).OpenItemCommand}"
+                                    CommandParameter="{Binding}">
+                                <controls:MediaCardControl ImageUrl="{Binding ImageUrl}" Title="{Binding Name}" Subtitle="{Binding ProductionYear}"
+                                                           CardWidth="150" CardHeight="225" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="{lang:Localize Loading}" IsVisible="{Binding IsLoading}"
+                           HorizontalAlignment="Center" Opacity="0.6" Margin="0,16" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

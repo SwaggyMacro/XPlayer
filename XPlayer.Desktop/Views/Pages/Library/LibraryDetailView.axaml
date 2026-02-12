@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Library"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+             x:Class="XPlayer.Desktop.Views.Pages.Library.LibraryDetailView"
+             x:DataType="vm:LibraryDetailViewModel">
+
+    <DockPanel>
+        <!-- Header -->
+        <StackPanel DockPanel.Dock="Top" Margin="16,8,16,16" Spacing="4">
+            <TextBlock Text="{Binding Library.Name}"
+                       FontSize="24" FontWeight="Bold" />
+        </StackPanel>
+
+        <!-- Items Grid -->
+        <ScrollViewer>
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Items}" Margin="16,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="Flat" Padding="0" Margin="0,0,12,12"
+                                    Command="{Binding $parent[ItemsControl].((vm:LibraryDetailViewModel)DataContext).OpenItemCommand}"
+                                    CommandParameter="{Binding}">
+                                <controls:MediaCardControl 
+                                    ImageUrl="{Binding ImageUrl}"
+                                    Title="{Binding Name}"
+                                    Subtitle="{Binding ProductionYear}"
+                                    CardWidth="150" CardHeight="225" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Load More -->
+                <Button Content="{lang:Localize LoadMore}"
+                        Command="{Binding LoadMoreCommand}"
+                        IsVisible="{Binding HasMore}"
+                        HorizontalAlignment="Center"
+                        Classes="Flat" Margin="0,16,0,24"
+                        Padding="24,8" />
+
+                <!-- Loading -->
+                <TextBlock Text="{lang:Localize Loading}"
+                           IsVisible="{Binding IsLoading}"
+                           HorizontalAlignment="Center"
+                           Opacity="0.6" Margin="0,16" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

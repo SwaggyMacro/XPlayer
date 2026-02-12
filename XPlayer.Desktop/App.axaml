@@ -15,5 +15,6 @@
         <suki:SukiTheme ThemeColor="Blue" />
         <avalonia:MaterialIconStyles />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="avares://XPlayer.Desktop/Views/Controls/MediaCardControl.axaml" />
     </Application.Styles>
 </Application>

@@ -251,4 +251,136 @@
   <data name="ConfirmDelete" xml:space="preserve">
     <value>Are you sure you want to delete this media source?</value>
   </data>
+  <data name="ContinueWatching" xml:space="preserve">
+    <value>Continue Watching</value>
+  </data>
+  <data name="NextUp" xml:space="preserve">
+    <value>Next Up</value>
+  </data>
+  <data name="LatestAdditions" xml:space="preserve">
+    <value>Latest Additions</value>
+  </data>
+  <data name="MyLibraries" xml:space="preserve">
+    <value>My Libraries</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to XPlayer</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Connect to a media server to get started.</value>
+  </data>
+  <data name="ConnectServer" xml:space="preserve">
+    <value>Connect Server</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="ViewAll" xml:space="preserve">
+    <value>View All</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="NoItemsAvailable" xml:space="preserve">
+    <value>No items available</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Forward" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="SeasonsCount" xml:space="preserve">
+    <value>{0} Seasons</value>
+  </data>
+  <data name="EpisodesCount" xml:space="preserve">
+    <value>{0} Episodes</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="CastAndCrew" xml:space="preserve">
+    <value>Cast &amp; Crew</value>
+  </data>
+  <data name="Episodes" xml:space="preserve">
+    <value>Episodes</value>
+  </data>
+  <data name="Seasons" xml:space="preserve">
+    <value>Seasons</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="Collections" xml:space="preserve">
+    <value>Collections</value>
+  </data>
+  <data name="Filmography" xml:space="preserve">
+    <value>Filmography</value>
+  </data>
+  <data name="Genre" xml:space="preserve">
+    <value>Genre</value>
+  </data>
+  <data name="Director" xml:space="preserve">
+    <value>Director</value>
+  </data>
+  <data name="Actor" xml:space="preserve">
+    <value>Actor</value>
+  </data>
+  <data name="Writer" xml:space="preserve">
+    <value>Writer</value>
+  </data>
+  <data name="Subtitles" xml:space="preserve">
+    <value>Subtitles</value>
+  </data>
+  <data name="AudioTrack" xml:space="preserve">
+    <value>Audio Track</value>
+  </data>
+  <data name="EpisodeNumber" xml:space="preserve">
+    <value>Episode {0}</value>
+  </data>
+  <data name="SeasonNumber" xml:space="preserve">
+    <value>Season {0}</value>
+  </data>
+  <data name="LoadMore" xml:space="preserve">
+    <value>Load More</value>
+  </data>
+  <data name="Movies" xml:space="preserve">
+    <value>Movies</value>
+  </data>
+  <data name="TvShows" xml:space="preserve">
+    <value>TV Shows</value>
+  </data>
+  <data name="Music" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="ContinueWatching" xml:space="preserve">
+    <value>Continue Watching</value>
+  </data>
+  <data name="NextUp" xml:space="preserve">
+    <value>Next Up</value>
+  </data>
+  <data name="LatestAdditions" xml:space="preserve">
+    <value>Latest Additions</value>
+  </data>
+  <data name="MyLibraries" xml:space="preserve">
+    <value>My Libraries</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to XPlayer</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Connect to your media server to start watching</value>
+  </data>
+  <data name="ConnectServer" xml:space="preserve">
+    <value>Connect Server</value>
+  </data>
 </root>

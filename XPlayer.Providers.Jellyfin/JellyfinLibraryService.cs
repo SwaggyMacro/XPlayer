@@ -72,6 +72,118 @@ namespace XPlayer.Providers.Jellyfin
             }
         }
 
+        public async Task<IEnumerable<IMediaItem>> GetResumeItemsAsync(int limit = 12, CancellationToken cancellationToken = default)
+        {
+            if (!_auth.IsAuthenticated || _auth.CurrentUserId == null) return Array.Empty<IMediaItem>();
+
+            try
+            {
+                var query = $"Users/{_auth.CurrentUserId}/Items/Resume?Limit={limit}&Fields=Overview,Path,MediaSources,People,Genres,Studios,Tags,DateCreated,OfficialRating,CommunityRating,CriticRating,ProductionYear";
+                var response = await _httpClient.GetFromJsonAsync<JsonElement>(query, cancellationToken);
+                return ParseItemsResponse(response);
+            }
+            catch
+            {
+                return Array.Empty<IMediaItem>();
+            }
+        }
+
+        public async Task<IEnumerable<IMediaItem>> GetLatestItemsAsync(string? parentId = null, int limit = 16, CancellationToken cancellationToken = default)
+        {
+            if (!_auth.IsAuthenticated || _auth.CurrentUserId == null) return Array.Empty<IMediaItem>();
+
+            try
+            {
+                var query = $"Users/{_auth.CurrentUserId}/Items/Latest?Limit={limit}&Fields=Overview,Path,MediaSources,People,Genres,Studios,Tags,DateCreated,OfficialRating,CommunityRating,CriticRating,ProductionYear";
+                if (!string.IsNullOrEmpty(parentId))
+                    query += $"&ParentId={parentId}";
+
+                var response = await _httpClient.GetFromJsonAsync<JsonElement>(query, cancellationToken);
+
+                // Latest endpoint returns a JSON array directly, not { Items: [...] }
+                if (response.ValueKind == JsonValueKind.Array)
+                {
+                    var list = new List<IMediaItem>();
+                    foreach (var item in response.EnumerateArray())
+                    {
+                        list.Add(ParseItem(item));
+                    }
+                    return list;
+                }
+
+                return ParseItemsResponse(response);
+            }
+            catch
+            {
+                return Array.Empty<IMediaItem>();
+            }
+        }
+
+        public async Task<IEnumerable<IMediaItem>> GetNextUpAsync(int limit = 12, CancellationToken cancellationToken = default)
+        {
+            if (!_auth.IsAuthenticated || _auth.CurrentUserId == null) return Array.Empty<IMediaItem>();
+
+            try
+            {
+                var query = $"Shows/NextUp?UserId={_auth.CurrentUserId}&Limit={limit}&Fields=Overview,Path,MediaSources,People,Genres,Studios,Tags,DateCreated,OfficialRating,CommunityRating,CriticRating,ProductionYear";
+                var response = await _httpClient.GetFromJsonAsync<JsonElement>(query, cancellationToken);
+                return ParseItemsResponse(response);
+            }
+            catch
+            {
+                return Array.Empty<IMediaItem>();
+            }
+        }
+
+        public async Task<IEnumerable<IMediaItem>> SearchAsync(string query, int limit = 50, CancellationToken cancellationToken = default)
+        {
+            if (!_auth.IsAuthenticated || _auth.CurrentUserId == null) return Array.Empty<IMediaItem>();
+
+            try
+            {
+                var url = $"Users/{_auth.CurrentUserId}/Items?SearchTerm={Uri.EscapeDataString(query)}&Limit={limit}&Recursive=true&Fields=Overview,Path,MediaSources,People,Genres,Studios,Tags,DateCreated,OfficialRating,CommunityRating,CriticRating,ProductionYear&IncludeItemTypes=Movie,Series,Episode";
+                var response = await _httpClient.GetFromJsonAsync<JsonElement>(url, cancellationToken);
+                return ParseItemsResponse(response);
+            }
+            catch
+            {
+                return Array.Empty<IMediaItem>();
+            }
+        }
+
+        public async Task<IEnumerable<IMediaItem>> GetPersonItemsAsync(string personName, int limit = 50, CancellationToken cancellationToken = default)
+        {
+            if (!_auth.IsAuthenticated || _auth.CurrentUserId == null) return Array.Empty<IMediaItem>();
+
+            try
+            {
+                var url = $"Users/{_auth.CurrentUserId}/Items?PersonIds=&Person={Uri.EscapeDataString(personName)}&Limit={limit}&Recursive=true&Fields=Overview,Path,MediaSources,People,Genres,Studios,Tags,DateCreated,OfficialRating,CommunityRating,CriticRating,ProductionYear&IncludeItemTypes=Movie,Series";
+                var response = await _httpClient.GetFromJsonAsync<JsonElement>(url, cancellationToken);
+                return ParseItemsResponse(response);
+            }
+            catch
+            {
+                return Array.Empty<IMediaItem>();
+            }
+        }
+
+        /// <summary>
+        /// Helper to parse the standard { Items: [...] } response format.
+        /// </summary>
+        private IEnumerable<IMediaItem> ParseItemsResponse(JsonElement response)
+        {
+            if (response.TryGetProperty("Items", out var items) && items.ValueKind == JsonValueKind.Array)
+            {
+                var list = new List<IMediaItem>();
+                foreach (var item in items.EnumerateArray())
+                {
+                    list.Add(ParseItem(item));
+                }
+                return list;
+            }
+            return Array.Empty<IMediaItem>();
+        }
+
         private IMediaItem ParseItem(JsonElement item)
         {
             var type = item.GetProperty("Type").GetString();
@@ -83,7 +195,7 @@ namespace XPlayer.Providers.Jellyfin
             string? imageUrl = null;
             if (item.TryGetProperty("ImageTags", out var imgTags) && imgTags.TryGetProperty("Primary", out var primaryTag))
             {
-                imageUrl = $"{_httpClient.BaseAddress}Items/{id}/Images/Primary?tag={primaryTag.GetString()}";
+                imageUrl = $"{_httpClient.BaseAddress}Items/{id}/Images/Primary?tag={primaryTag.GetString()}&maxWidth=400";
             }
 
             // Backdrop
@@ -92,7 +204,7 @@ namespace XPlayer.Providers.Jellyfin
             {
                 var arr = bdTags.EnumerateArray().ToList();
                 if (arr.Count > 0)
-                    backdropUrl = $"{_httpClient.BaseAddress}Items/{id}/Images/Backdrop/0?tag={arr[0].GetString()}";
+                    backdropUrl = $"{_httpClient.BaseAddress}Items/{id}/Images/Backdrop/0?tag={arr[0].GetString()}&maxWidth=960";
             }
 
             // Duration
@@ -146,13 +258,21 @@ namespace XPlayer.Providers.Jellyfin
                     
                     string? personImg = null;
                     if (person.TryGetProperty("PrimaryImageTag", out var pit) && !string.IsNullOrEmpty(personId))
-                        personImg = $"{_httpClient.BaseAddress}Items/{personId}/Images/Primary?tag={pit.GetString()}";
+                        personImg = $"{_httpClient.BaseAddress}Items/{personId}/Images/Primary?tag={pit.GetString()}&maxWidth=200";
                     
                     people.Add(new PersonInfo(personName, role, personType, personImg));
                 }
             }
 
-            var meta = new MediaMetadata(backdropUrl, year, communityRating, criticRating, officialRating, genres, tags, studios, people, premiereDate, dateCreated);
+            // Played percentage from UserData
+            double? playedPercentage = null;
+            if (item.TryGetProperty("UserData", out var userData))
+            {
+                if (userData.TryGetProperty("PlayedPercentage", out var pp))
+                    playedPercentage = pp.GetDouble();
+            }
+
+            var meta = new MediaMetadata(backdropUrl, year, communityRating, criticRating, officialRating, genres, tags, studios, people, premiereDate, dateCreated, playedPercentage);
 
             return type switch
             {
@@ -167,7 +287,8 @@ namespace XPlayer.Providers.Jellyfin
                 "Episode" => new EpisodeItem(id, name, overview, imageUrl, meta, duration, streamUrl,
                     item.TryGetProperty("IndexNumber", out var ei) ? ei.GetInt32() : 0,
                     item.TryGetProperty("SeasonId", out var seid) ? seid.GetString() ?? "" : "",
-                    item.TryGetProperty("SeriesId", out var srid) ? srid.GetString() ?? "" : ""),
+                    item.TryGetProperty("SeriesId", out var srid) ? srid.GetString() ?? "" : "",
+                    item.TryGetProperty("SeriesName", out var sname) ? sname.GetString() : null),
                 _ => new BaseItem(id, name, overview, imageUrl, meta, type ?? "Unknown")
             };
         }
@@ -185,7 +306,8 @@ namespace XPlayer.Providers.Jellyfin
         IReadOnlyList<string> Studios,
         IReadOnlyList<IPerson> People,
         DateTime? PremiereDate,
-        DateTime? DateCreated
+        DateTime? DateCreated,
+        double? PlayedPercentage
     );
 
     public record PersonInfo(string Name, string? Role, string? Type, string? ImageUrl) : IPerson;
@@ -206,6 +328,7 @@ namespace XPlayer.Providers.Jellyfin
         public IReadOnlyList<IPerson> People => Meta.People;
         public DateTime? PremiereDate => Meta.PremiereDate;
         public DateTime? DateCreated => Meta.DateCreated;
+        public double? PlayedPercentage => Meta.PlayedPercentage;
     }
     
     public record MovieItem(string Id, string Name, string Overview, string? ImageUrl, MediaMetadata Meta, TimeSpan Duration, string? StreamUrl) : IVideo
@@ -222,6 +345,7 @@ namespace XPlayer.Providers.Jellyfin
         public IReadOnlyList<IPerson> People => Meta.People;
         public DateTime? PremiereDate => Meta.PremiereDate;
         public DateTime? DateCreated => Meta.DateCreated;
+        public double? PlayedPercentage => Meta.PlayedPercentage;
     }
 
     public record SeriesItem(string Id, string Name, string Overview, string? ImageUrl, MediaMetadata Meta, int SeasonCount, int EpisodeCount, string? Status) : ISeries
@@ -238,6 +362,7 @@ namespace XPlayer.Providers.Jellyfin
         public IReadOnlyList<IPerson> People => Meta.People;
         public DateTime? PremiereDate => Meta.PremiereDate;
         public DateTime? DateCreated => Meta.DateCreated;
+        public double? PlayedPercentage => Meta.PlayedPercentage;
     }
 
     public record SeasonItem(string Id, string Name, string Overview, string? ImageUrl, MediaMetadata Meta, int Index, string SeriesId) : ISeason
@@ -254,9 +379,10 @@ namespace XPlayer.Providers.Jellyfin
         public IReadOnlyList<IPerson> People => Meta.People;
         public DateTime? PremiereDate => Meta.PremiereDate;
         public DateTime? DateCreated => Meta.DateCreated;
+        public double? PlayedPercentage => Meta.PlayedPercentage;
     }
 
-    public record EpisodeItem(string Id, string Name, string Overview, string? ImageUrl, MediaMetadata Meta, TimeSpan Duration, string? StreamUrl, int Index, string SeasonId, string SeriesId) : IEpisode
+    public record EpisodeItem(string Id, string Name, string Overview, string? ImageUrl, MediaMetadata Meta, TimeSpan Duration, string? StreamUrl, int Index, string SeasonId, string SeriesId, string? SeriesName = null) : IEpisode
     {
         public string Type => "Episode";
         public string? BackdropImageUrl => Meta.BackdropImageUrl;
@@ -270,5 +396,6 @@ namespace XPlayer.Providers.Jellyfin
         public IReadOnlyList<IPerson> People => Meta.People;
         public DateTime? PremiereDate => Meta.PremiereDate;
         public DateTime? DateCreated => Meta.DateCreated;
+        public double? PlayedPercentage => Meta.PlayedPercentage;
     }
 }

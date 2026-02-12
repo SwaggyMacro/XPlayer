@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Search"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+             x:Class="XPlayer.Desktop.Views.Pages.Search.SearchResultsView"
+             x:DataType="vm:SearchResultsViewModel">
+
+    <DockPanel>
+        <!-- Search Box -->
+        <Border DockPanel.Dock="Top" Margin="16,8,16,16">
+            <DockPanel>
+                <TextBlock Text="{lang:Localize SearchResults}" FontSize="24" FontWeight="Bold"
+                           DockPanel.Dock="Left" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Query}" Watermark="{lang:Localize Search}"
+                         DockPanel.Dock="Right" Width="300" Margin="16,0,0,0" />
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer>
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Results}" Margin="16,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="Flat" Padding="0" Margin="0,0,12,12"
+                                    Command="{Binding $parent[ItemsControl].((vm:SearchResultsViewModel)DataContext).OpenItemCommand}"
+                                    CommandParameter="{Binding}">
+                                <controls:MediaCardControl ImageUrl="{Binding ImageUrl}" Title="{Binding Name}" Subtitle="{Binding ProductionYear}"
+                                                           CardWidth="150" CardHeight="225" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="{lang:Localize NoItemsAvailable}"
+                           IsVisible="{Binding !Results.Count}"
+                           HorizontalAlignment="Center" Opacity="0.6" Margin="0,32"
+                           FontSize="14" />
+                <TextBlock Text="{lang:Localize Loading}" IsVisible="{Binding IsLoading}"
+                           HorizontalAlignment="Center" Opacity="0.6" Margin="0,16" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

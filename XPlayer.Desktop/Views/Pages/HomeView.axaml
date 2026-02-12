@@ -2,7 +2,110 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="XPlayer.Desktop.Views.Pages.HomeView">
-    Welcome to Avalonia!
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="XPlayer.Desktop.Views.Pages.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <DockPanel>
+        <!-- Navigation Bar (visible when connected) -->
+        <Border DockPanel.Dock="Top" 
+                Padding="8,6"
+                IsVisible="{Binding IsConnected}"
+                Background="Transparent">
+            <DockPanel>
+                <!-- Back / Forward Buttons -->
+                <StackPanel Orientation="Horizontal" Spacing="4" DockPanel.Dock="Left"
+                            VerticalAlignment="Center">
+                    <Button Command="{Binding ContentNav.GoBackCommand}"
+                            Classes="Flat"
+                            ToolTip.Tip="{lang:Localize Back}"
+                            Padding="6">
+                        <avalonia:MaterialIcon Kind="ArrowLeft" Width="20" Height="20" />
+                    </Button>
+                    <Button Command="{Binding ContentNav.GoForwardCommand}"
+                            Classes="Flat"
+                            ToolTip.Tip="{lang:Localize Forward}"
+                            Padding="6">
+                        <avalonia:MaterialIcon Kind="ArrowRight" Width="20" Height="20" />
+                    </Button>
+                </StackPanel>
+
+                <!-- Refresh -->
+                <Button Command="{Binding RefreshCommand}"
+                        DockPanel.Dock="Right"
+                        Classes="Flat"
+                        ToolTip.Tip="{lang:Localize Refresh}"
+                        Padding="6" Margin="4,0,0,0">
+                    <avalonia:MaterialIcon Kind="Refresh" Width="20" Height="20" />
+                </Button>
+
+                <!-- Breadcrumbs -->
+                <ItemsControl ItemsSource="{Binding ContentNav.Breadcrumbs}"
+                              VerticalAlignment="Center"
+                              Margin="8,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="0" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="›" 
+                                           FontSize="14" 
+                                           Opacity="0.4"
+                                           Margin="6,0"
+                                           VerticalAlignment="Center"
+                                           IsVisible="{Binding $parent[ItemsControl].((vm:HomeViewModel)DataContext).ContentNav.Breadcrumbs.Count}" />
+                                <Button Content="{Binding Label}"
+                                        Classes="Flat"
+                                        FontSize="13"
+                                        Padding="4,2"
+                                        Opacity="0.7" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
+        </Border>
+
+        <!-- Content Area -->
+        <Panel>
+            <!-- Connected: show content from navigation service -->
+            <ContentControl Content="{Binding ContentNav.CurrentContent}"
+                            IsVisible="{Binding IsConnected}" />
+
+            <!-- Disconnected: Welcome Card -->
+            <Border IsVisible="{Binding !IsConnected}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="12"
+                    Padding="48,40"
+                    Background="{DynamicResource SukiCardBackground}">
+                <StackPanel Spacing="16" HorizontalAlignment="Center">
+                    <avalonia:MaterialIcon Kind="MovieOpenPlay" 
+                                           Width="64" Height="64"
+                                           HorizontalAlignment="Center"
+                                           Opacity="0.6" />
+                    <TextBlock Text="{lang:Localize WelcomeTitle}"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{lang:Localize WelcomeMessage}"
+                               FontSize="14"
+                               Opacity="0.7"
+                               HorizontalAlignment="Center" />
+                    <Button Content="{lang:Localize ConnectServer}"
+                            Command="{Binding ConnectServerCommand}"
+                            HorizontalAlignment="Center"
+                            Classes="Flat Accent"
+                            Padding="24,10"
+                            Margin="0,8,0,0" />
+                </StackPanel>
+            </Border>
+        </Panel>
+    </DockPanel>
 </UserControl>

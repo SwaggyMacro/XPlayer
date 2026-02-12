@@ -203,4 +203,136 @@
     <data name="GuestUser" xml:space="preserve">
         <value>访客</value>
     </data>
+    <data name="ContinueWatching" xml:space="preserve">
+        <value>继续观看</value>
+    </data>
+    <data name="NextUp" xml:space="preserve">
+        <value>即将播放</value>
+    </data>
+    <data name="LatestAdditions" xml:space="preserve">
+        <value>最新添加</value>
+    </data>
+    <data name="MyLibraries" xml:space="preserve">
+        <value>我的媒体库</value>
+    </data>
+    <data name="WelcomeTitle" xml:space="preserve">
+        <value>欢迎使用 XPlayer</value>
+    </data>
+    <data name="WelcomeMessage" xml:space="preserve">
+        <value>连接媒体服务器以开始使用。</value>
+    </data>
+    <data name="ConnectServer" xml:space="preserve">
+        <value>连接服务器</value>
+    </data>
+    <data name="Play" xml:space="preserve">
+        <value>播放</value>
+    </data>
+    <data name="ViewAll" xml:space="preserve">
+        <value>查看全部</value>
+    </data>
+    <data name="Refresh" xml:space="preserve">
+        <value>刷新</value>
+    </data>
+    <data name="NoItemsAvailable" xml:space="preserve">
+        <value>暂无内容</value>
+    </data>
+    <data name="Back" xml:space="preserve">
+        <value>返回</value>
+    </data>
+    <data name="Forward" xml:space="preserve">
+        <value>前进</value>
+    </data>
+    <data name="SeasonsCount" xml:space="preserve">
+        <value>{0} 季</value>
+    </data>
+    <data name="EpisodesCount" xml:space="preserve">
+        <value>{0} 集</value>
+    </data>
+    <data name="Overview" xml:space="preserve">
+        <value>简介</value>
+    </data>
+    <data name="CastAndCrew" xml:space="preserve">
+        <value>演职人员</value>
+    </data>
+    <data name="Episodes" xml:space="preserve">
+        <value>剧集</value>
+    </data>
+    <data name="Seasons" xml:space="preserve">
+        <value>季</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+        <value>搜索</value>
+    </data>
+    <data name="SearchResults" xml:space="preserve">
+        <value>搜索结果</value>
+    </data>
+    <data name="Collections" xml:space="preserve">
+        <value>合集</value>
+    </data>
+    <data name="Filmography" xml:space="preserve">
+        <value>作品列表</value>
+    </data>
+    <data name="Genre" xml:space="preserve">
+        <value>类型</value>
+    </data>
+    <data name="Director" xml:space="preserve">
+        <value>导演</value>
+    </data>
+    <data name="Actor" xml:space="preserve">
+        <value>演员</value>
+    </data>
+    <data name="Writer" xml:space="preserve">
+        <value>编剧</value>
+    </data>
+    <data name="Subtitles" xml:space="preserve">
+        <value>字幕</value>
+    </data>
+    <data name="AudioTrack" xml:space="preserve">
+        <value>音轨</value>
+    </data>
+    <data name="EpisodeNumber" xml:space="preserve">
+        <value>第 {0} 集</value>
+    </data>
+    <data name="SeasonNumber" xml:space="preserve">
+        <value>第 {0} 季</value>
+    </data>
+    <data name="LoadMore" xml:space="preserve">
+        <value>加载更多</value>
+    </data>
+    <data name="Movies" xml:space="preserve">
+        <value>电影</value>
+    </data>
+    <data name="TvShows" xml:space="preserve">
+        <value>电视节目</value>
+    </data>
+    <data name="Music" xml:space="preserve">
+        <value>音乐</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+        <value>加载中...</value>
+    </data>
+  <data name="Details" xml:space="preserve">
+    <value>详情</value>
+  </data>
+  <data name="ContinueWatching" xml:space="preserve">
+    <value>继续观看</value>
+  </data>
+  <data name="NextUp" xml:space="preserve">
+    <value>接下来播放</value>
+  </data>
+  <data name="LatestAdditions" xml:space="preserve">
+    <value>最近添加</value>
+  </data>
+  <data name="MyLibraries" xml:space="preserve">
+    <value>我的媒体库</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>欢迎使用 XPlayer</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>连接您的媒体服务器以开始观看</value>
+  </data>
+  <data name="ConnectServer" xml:space="preserve">
+    <value>连接服务器</value>
+  </data>
 </root>

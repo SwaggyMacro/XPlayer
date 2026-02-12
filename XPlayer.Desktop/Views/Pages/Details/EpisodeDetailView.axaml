@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Details"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             x:Class="XPlayer.Desktop.Views.Pages.Details.EpisodeDetailView"
+             x:DataType="vm:EpisodeDetailViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="16" Margin="24,16,24,24">
+            <!-- Backdrop / Thumbnail -->
+            <Border Height="280" ClipToBounds="True" CornerRadius="12"
+                   IsVisible="{Binding Episode.BackdropImageUrl, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Image Source="{Binding Episode.BackdropImageUrl}"
+                       Stretch="UniformToFill" />
+            </Border>
+
+            <!-- Title -->
+            <TextBlock Text="{Binding Episode.Name}"
+                       FontSize="24" FontWeight="Bold" />
+
+            <!-- Metadata row -->
+            <StackPanel Orientation="Horizontal" Spacing="12" Opacity="0.7">
+                <TextBlock Text="{Binding Episode.ProductionYear}" FontSize="14" />
+                <StackPanel Orientation="Horizontal" Spacing="4"
+                            IsVisible="{Binding Episode.CommunityRating, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <avalonia:MaterialIcon Kind="Star" Width="14" Height="14" />
+                    <TextBlock Text="{Binding Episode.CommunityRating, StringFormat={}{0:F1}}" FontSize="14" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Play -->
+            <Button Classes="Flat Accent" Padding="24,10"
+                    Command="{Binding PlayCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <avalonia:MaterialIcon Kind="Play" Width="20" Height="20" />
+                    <TextBlock Text="{lang:Localize Play}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <!-- Overview -->
+            <TextBlock Text="{Binding Episode.Overview}"
+                       FontSize="13" Opacity="0.8" TextWrapping="Wrap"
+                       IsVisible="{Binding Episode.Overview, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

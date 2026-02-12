@@ -20,6 +20,12 @@ public interface IMediaItem
     IReadOnlyList<IPerson> People { get; }
     DateTime? PremiereDate { get; }
     DateTime? DateCreated { get; }
+    
+    /// <summary>
+    /// Percentage of the item that has been played (0-100). Null if not tracked.
+    /// Used for "Continue Watching" progress bars.
+    /// </summary>
+    double? PlayedPercentage { get; }
 }
 
 /// <summary>

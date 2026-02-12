@@ -1,0 +1,163 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Details"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             x:Class="XPlayer.Desktop.Views.Pages.Details.ItemDetailView"
+             x:DataType="vm:ItemDetailViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="0">
+            <!-- Backdrop -->
+            <Panel Height="320" ClipToBounds="True"
+                   IsVisible="{Binding Item.BackdropImageUrl, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Image asyncImageLoader:ImageLoader.Source="{Binding Item.BackdropImageUrl}"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+                <Border>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0%,50%" EndPoint="0%,100%">
+                            <GradientStop Color="#00000000" Offset="0" />
+                            <GradientStop Color="#DD000000" Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+            </Panel>
+
+            <!-- Item Info -->
+            <StackPanel Margin="24,16,24,24" Spacing="16">
+                <!-- Title + Year + Rating -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding Item.Name}"
+                               FontSize="28" FontWeight="Bold" />
+                    <StackPanel Orientation="Horizontal" Spacing="12" Opacity="0.7">
+                        <TextBlock Text="{Binding Item.ProductionYear}" FontSize="14" />
+                        <TextBlock Text="{Binding Item.OfficialRating}" FontSize="14" />
+                        <StackPanel Orientation="Horizontal" Spacing="4"
+                                    IsVisible="{Binding Item.CommunityRating, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <avalonia:MaterialIcon Kind="Star" Width="14" Height="14" />
+                            <TextBlock Text="{Binding Item.CommunityRating, StringFormat={}{0:F1}}" FontSize="14" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Play Button (for movies) -->
+                <Button Classes="Flat Accent" Padding="24,10"
+                        IsVisible="{Binding IsMovie}"
+                        Command="{Binding PlayCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <avalonia:MaterialIcon Kind="Play" Width="20" Height="20" />
+                        <TextBlock Text="{lang:Localize Play}" VerticalAlignment="Center" FontSize="14" />
+                    </StackPanel>
+                </Button>
+
+                <!-- Overview -->
+                <StackPanel Spacing="6"
+                            IsVisible="{Binding Item.Overview, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="{lang:Localize Overview}"
+                               FontSize="16" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Item.Overview}"
+                               FontSize="13" Opacity="0.8"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+
+                <!-- Genres -->
+                <ItemsControl ItemsSource="{Binding Item.Genres}"
+                              IsVisible="{Binding Item.Genres.Count}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding}" Classes="Flat" Padding="10,4" Margin="0,0,6,6"
+                                    FontSize="12"
+                                    Command="{Binding $parent[ItemsControl].((vm:ItemDetailViewModel)DataContext).OpenGenreCommand}"
+                                    CommandParameter="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Seasons (for Series) -->
+                <StackPanel Spacing="12" IsVisible="{Binding IsSeries}">
+                    <TextBlock Text="{lang:Localize Seasons}"
+                               FontSize="18" FontWeight="SemiBold" />
+                    <ItemsControl ItemsSource="{Binding Seasons}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="12" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Classes="Flat" Padding="0"
+                                        Command="{Binding $parent[ItemsControl].((vm:ItemDetailViewModel)DataContext).OpenSeasonCommand}"
+                                        CommandParameter="{Binding}">
+                                    <controls:MediaCardControl 
+                                        ImageUrl="{Binding ImageUrl}"
+                                        Title="{Binding Name}"
+                                        CardWidth="140" CardHeight="210" />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- Cast & Crew -->
+                <StackPanel Spacing="12"
+                            IsVisible="{Binding Item.People.Count}">
+                    <TextBlock Text="{lang:Localize CastAndCrew}"
+                               FontSize="18" FontWeight="SemiBold" />
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Item.People}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="12" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Classes="Flat" Padding="0"
+                                            Command="{Binding $parent[ItemsControl].((vm:ItemDetailViewModel)DataContext).OpenPersonCommand}"
+                                            CommandParameter="{Binding}">
+                                        <StackPanel Width="100" Spacing="4">
+                                            <Border CornerRadius="50"
+                                                    Width="80" Height="80"
+                                                    ClipToBounds="True"
+                                                    Background="#20808080">
+                                                <avalonia:MaterialIcon Kind="Account"
+                                                                       Width="40" Height="40"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"
+                                                                       Opacity="0.4" />
+                                            </Border>
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontSize="12" FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis" MaxLines="1" />
+                                            <TextBlock Text="{Binding Role}"
+                                                       FontSize="11" Opacity="0.6"
+                                                       HorizontalAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis" MaxLines="1" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Loading -->
+            <TextBlock Text="{lang:Localize Loading}"
+                       IsVisible="{Binding IsLoading}"
+                       HorizontalAlignment="Center"
+                       Opacity="0.6" Margin="0,16" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

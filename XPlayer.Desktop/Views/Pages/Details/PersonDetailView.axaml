@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:XPlayer.Desktop.ViewModels.Pages.Details"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:lang="using:XPlayer.Lang"
+             xmlns:controls="using:XPlayer.Desktop.Views.Controls"
+             x:Class="XPlayer.Desktop.Views.Pages.Details.PersonDetailView"
+             x:DataType="vm:PersonDetailViewModel">
+
+    <DockPanel>
+        <!-- Header -->
+        <StackPanel DockPanel.Dock="Top" Margin="16,8,16,16" Spacing="8">
+            <StackPanel Orientation="Horizontal" Spacing="16">
+                <Border CornerRadius="40" Width="80" Height="80" ClipToBounds="True"
+                        Background="#20808080">
+                    <avalonia:MaterialIcon Kind="Account" Width="40" Height="40"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Opacity="0.4" />
+                </Border>
+                <StackPanel VerticalAlignment="Center" Spacing="4">
+                    <TextBlock Text="{Binding Person.Name}" FontSize="24" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Person.Type}" FontSize="13" Opacity="0.6" />
+                </StackPanel>
+            </StackPanel>
+            <TextBlock Text="{lang:Localize Filmography}" FontSize="18" FontWeight="SemiBold" Margin="0,8,0,0" />
+        </StackPanel>
+
+        <ScrollViewer>
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Filmography}" Margin="16,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="Flat" Padding="0" Margin="0,0,12,12"
+                                    Command="{Binding $parent[ItemsControl].((vm:PersonDetailViewModel)DataContext).OpenItemCommand}"
+                                    CommandParameter="{Binding}">
+                                <controls:MediaCardControl ImageUrl="{Binding ImageUrl}" Title="{Binding Name}" Subtitle="{Binding ProductionYear}"
+                                                           CardWidth="150" CardHeight="225" />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Text="{lang:Localize Loading}" IsVisible="{Binding IsLoading}"
+                           HorizontalAlignment="Center" Opacity="0.6" Margin="0,16" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>
